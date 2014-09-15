@@ -184,3 +184,56 @@ void Walker::load(const char *filename){
       }
 
 }
+
+/**
+ * calculate the overlap of the Walke with the jastrow trial
+ */
+void Walker::calc_overlap(){
+
+   overlap = 1.0;
+
+   for(int row = 0;row < Ly;++row)
+      for(int col = 0;col < Lx;++col){
+
+         int ind = row*Lx + col;
+         
+         //neighbours
+         int nr = (row + 1)%Ly * Lx + col;
+         int nl = (row - 1 + Ly)%Ly * Lx + col;
+         int nu = row * Lx + (col + 1)%Lx;
+         int nd = row * Lx + (col - 1 + Lx)%Lx;
+
+         if((*this)[ind] == (*this)[nr] && nr > ind)
+            overlap *= global::f;
+
+         if((*this)[ind] == (*this)[nl] && nl > ind)
+            overlap *= global::f;
+
+         if((*this)[ind] == (*this)[nu] && nu > ind)
+            overlap *= global::f;
+
+         if((*this)[ind] == (*this)[nd] && nd > ind)
+            overlap *= global::f;
+
+      }
+
+}
+
+/** 
+ * fill the walker with random ups or downs
+ */
+void Walker::random() {
+
+   for(int row = 0;row < Ly;++row)
+      for(int col = 0;col < Lx;++col){
+
+         double x = rgen<double>();
+
+         if(x > 0)
+            (*this)[row*Lx + col] = true;
+         else
+            (*this)[row*Lx + col] = false;
+
+      }
+
+}

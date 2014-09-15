@@ -33,6 +33,8 @@ class Walker : public vector< bool > {
 
       void multWeight(double);
 
+      void calc_overlap();
+
       double gOverlap() const;
 
       double gEL() const;
@@ -43,6 +45,8 @@ class Walker : public vector< bool > {
 
       void load(const char *);
 
+      void random();
+
   private:
 
       //!The walker weight
@@ -51,8 +55,9 @@ class Walker : public vector< bool > {
       //!local energy
       double EL;
 
-      //!maximal value of the overlap during sweep (closest to real value...
+      //! overlap
       double overlap;
+
 
 };
 

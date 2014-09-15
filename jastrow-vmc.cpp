@@ -21,9 +21,19 @@ int main(int argc,char *argv[]){
 
    int L = atoi(argv[1]);
 
-   double f = 0.1;
+   double f = 0.9;
 
    //initialize the dimensions of the problem, set the trial
    global::init(L,L,f);
+
+   Walker walker; 
+
+   Distribution dist;
+   dist.construct(walker);
+
+   cout << dist << endl;
+
+   cout << endl;
+   cout << dist.energy() << endl;
    
 }

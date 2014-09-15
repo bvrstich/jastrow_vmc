@@ -12,6 +12,8 @@ using std::complex;
 
 #include "Random.h"
 
+class Walker;
+
 namespace global {
 
    extern Random RN;
