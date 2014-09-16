@@ -20,20 +20,15 @@ int main(int argc,char *argv[]){
    cout.precision(15);
 
    int L = atoi(argv[1]);
-
-   double f = 0.9;
+   int Nw = atoi(argv[2]);
+   double f = atof(argv[3]);
 
    //initialize the dimensions of the problem, set the trial
    global::init(L,L,f);
 
-   Walker walker; 
+   Walker walker;
 
-   Distribution dist;
-   dist.construct(walker);
+   VMC vmc(Nw);
+   vmc.walk(100000);
 
-   cout << dist << endl;
-
-   cout << endl;
-   cout << dist.energy() << endl;
-   
 }

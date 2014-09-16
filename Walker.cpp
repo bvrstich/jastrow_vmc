@@ -18,15 +18,16 @@ using namespace global;
 /**
  * construct a Walker object: initialize on AF state
  * @param n_trot_in number of trotter terms
+ * @param option start with spin up or spin down
  */
-Walker::Walker() : std::vector< bool >( Lx * Ly ){
+Walker::Walker(int option) : std::vector< bool >( Lx * Ly ){
 
    weight = 1.0;
 
    for(int r = 0;r < Ly;++r)
       for(int c = 0;c < Lx;++c){
 
-         if( (r + c)%2 == 0)
+         if( (r + c + option)%2 == 0)
             (*this)[ r*Lx + c ] = true;
          else
             (*this)[ r*Lx + c ] = false;
@@ -121,10 +122,10 @@ double Walker::pot_en() const {
    //first horizontal
    for(int r = 0;r < Ly;++r){
 
-      for(int c = 0;c < Lx - 1;++c){
+      for(int c = 0;c < Lx;++c){
 
          //Sz Sz
-         if( (*this)[r*Lx + c] == (*this)[r*Lx + (c + 1)] )//up up or down down
+         if( (*this)[r*Lx + c] == (*this)[r*Lx + (c + 1)%Lx] )//up up or down down
             tmp += 0.25;
          else //up down or down up
             tmp -= 0.25;
@@ -136,10 +137,10 @@ double Walker::pot_en() const {
    //then vertical
    for(int c = 0;c < Lx;++c){
 
-      for(int r = 0;r < Ly - 1;++r){
+      for(int r = 0;r < Ly;++r){
 
          //Sz Sz
-         if( (*this)[r*Lx + c] == (*this)[(r + 1)*Lx + c] )//up up or down down
+         if( (*this)[r*Lx + c] == (*this)[( (r + 1)%Ly ) *Lx + c] )//up up or down down
             tmp += 0.25;
          else //up down or down up
             tmp -= 0.25;
@@ -196,24 +197,20 @@ void Walker::calc_overlap(){
       for(int col = 0;col < Lx;++col){
 
          int ind = row*Lx + col;
-         
-         //neighbours
-         int nr = (row + 1)%Ly * Lx + col;
-         int nl = (row - 1 + Ly)%Ly * Lx + col;
-         int nu = row * Lx + (col + 1)%Lx;
-         int nd = row * Lx + (col - 1 + Lx)%Lx;
 
-         if((*this)[ind] == (*this)[nr] && nr > ind)
-            overlap *= global::f;
+         if( (*this)[ind] == true ){
 
-         if((*this)[ind] == (*this)[nl] && nl > ind)
-            overlap *= global::f;
+            //neighbours
+            int nr = ( (row + 1)%Ly ) * Lx + col;
+            int nu = row * Lx + (col + 1)%Lx;
 
-         if((*this)[ind] == (*this)[nu] && nu > ind)
-            overlap *= global::f;
+            if((*this)[ind] == (*this)[nr])
+               overlap *= global::f;
 
-         if((*this)[ind] == (*this)[nd] && nd > ind)
-            overlap *= global::f;
+            if((*this)[ind] == (*this)[nu])
+               overlap *= global::f;
+
+         }
 
       }
 

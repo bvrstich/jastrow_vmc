@@ -40,7 +40,7 @@ class Distribution : public vector<double> {
 
       int metropolis() const;
 
-      double energy();
+      double energy() const;
 
    private:
 

@@ -166,11 +166,11 @@ int Distribution::metropolis() const {
 /** 
  * get the energy, first the distribution has to be filled!
  */
-double Distribution::energy(){
+double Distribution::energy() const {
 
    double energy = list[0].pot_en();
 
-   for(unsigned int i = 0;i < list.size();++i)
+   for(unsigned int i = 1;i < list.size();++i)
       energy -= 0.5 * list[i].gOverlap() / list[0].gOverlap();
 
    return energy;
