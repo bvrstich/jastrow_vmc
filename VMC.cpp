@@ -148,3 +148,22 @@ void VMC::write(const int step){
    output.close();
 
 }
+
+/**
+ * dump the walkers to a single file
+ */
+void VMC::dump(const char *filename){
+
+   ofstream out(filename);
+   out.precision(16);
+
+   for(unsigned int i = 0;i < walker.size();++i){
+
+      for(int row = 0;row < Ly;++row)
+         for(int col = 0;col < Ly;++col)
+            out << walker[i][row*Lx + col] << " ";
+      out << endl;
+
+   }
+
+}

@@ -26,9 +26,12 @@ int main(int argc,char *argv[]){
    //initialize the dimensions of the problem, set the trial
    global::init(L,L,f);
 
-   Walker walker;
-
    VMC vmc(Nw);
-   vmc.walk(100000);
+   vmc.walk(5000);
+
+   char filename[200];
+   sprintf(filename,"output/%dx%d/f=%f.walk",L,L,global::f);
+
+   vmc.dump(filename);
 
 }

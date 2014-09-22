@@ -34,6 +34,8 @@ class VMC {
       //Setup the walkers
       void SetupWalkers();
 
+      void dump(const char *);
+
    private:
       
       //!The total desired number of walkers
