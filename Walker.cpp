@@ -122,10 +122,10 @@ double Walker::pot_en() const {
    //first horizontal
    for(int r = 0;r < Ly;++r){
 
-      for(int c = 0;c < Lx;++c){
+      for(int c = 0;c < Lx - 1;++c){
 
          //Sz Sz
-         if( (*this)[r*Lx + c] == (*this)[r*Lx + (c + 1)%Lx] )//up up or down down
+         if( (*this)[r*Lx + c] == (*this)[r*Lx + c + 1] )//up up or down down
             tmp += 0.25;
          else //up down or down up
             tmp -= 0.25;
@@ -137,10 +137,10 @@ double Walker::pot_en() const {
    //then vertical
    for(int c = 0;c < Lx;++c){
 
-      for(int r = 0;r < Ly;++r){
+      for(int r = 0;r < Ly - 1;++r){
 
          //Sz Sz
-         if( (*this)[r*Lx + c] == (*this)[( (r + 1)%Ly ) *Lx + c] )//up up or down down
+         if( (*this)[r*Lx + c] == (*this)[(r + 1) * Lx + c] )//up up or down down
             tmp += 0.25;
          else //up down or down up
             tmp -= 0.25;
@@ -193,43 +193,39 @@ void Walker::calc_overlap(){
 
    overlap = 1.0;
 
+   //horizontal
    for(int row = 0;row < Ly;++row)
-      for(int col = 0;col < Lx;++col){
+      for(int col = 0;col < Lx - 1;++col){
 
          int ind = row*Lx + col;
 
          if( (*this)[ind] == true ){
 
             //neighbours
-            int nr = ( (row + 1)%Ly ) * Lx + col;
-            int nu = row * Lx + (col + 1)%Lx;
+            int neigh = row * Lx + col + 1;
 
-            if((*this)[ind] == (*this)[nr])
-               overlap *= global::f;
-
-            if((*this)[ind] == (*this)[nu])
+            if((*this)[ind] == (*this)[neigh])
                overlap *= global::f;
 
          }
 
       }
+   
+   //vertical
+   for(int col = 0;col < Lx;++col)
+      for(int row = 0;row < Ly - 1;++row){
 
-}
+         int ind = row*Lx + col;
 
-/** 
- * fill the walker with random ups or downs
- */
-void Walker::random() {
+         if( (*this)[ind] == true ){
 
-   for(int row = 0;row < Ly;++row)
-      for(int col = 0;col < Lx;++col){
+            //neighbours
+            int neigh = (row + 1) * Lx + col;
 
-         double x = rgen<double>();
+            if((*this)[ind] == (*this)[neigh])
+               overlap *= global::f;
 
-         if(x > 0)
-            (*this)[row*Lx + col] = true;
-         else
-            (*this)[row*Lx + col] = false;
+         }
 
       }
 

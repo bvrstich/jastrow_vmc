@@ -45,8 +45,6 @@ class Walker : public vector< bool > {
 
       void load(const char *);
 
-      void random();
-
   private:
 
       //!The walker weight

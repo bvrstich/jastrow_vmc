@@ -95,14 +95,14 @@ void Distribution::construct(const Walker &walker_i){
    //first horizontal 'final' states
    for(int r = 0;r < Ly;++r){
 
-      for(int c = 0;c < Lx;++c){
+      for(int c = 0;c < Lx - 1;++c){
 
-         if(walker_i[r*Lx + c] != walker_i[r*Lx + (c + 1)%Lx]){
+         if(walker_i[r*Lx + c] != walker_i[r*Lx + c + 1]){
 
             Walker walker_f(walker_i);
 
             walker_f[r*Lx + c] = !(walker_i[r*Lx + c]);
-            walker_f[r*Lx + (c + 1)%Lx] = !(walker_i[r*Lx + (c + 1)%Lx]);
+            walker_f[r*Lx + c + 1] = !(walker_i[r*Lx + c + 1]);
 
             list.push_back(walker_f);
 
@@ -115,14 +115,14 @@ void Distribution::construct(const Walker &walker_i){
    //then vertical 'final' states
    for(int c = 0;c < Lx;++c){
 
-      for(int r = 0;r < Ly;++r){
+      for(int r = 0;r < Ly - 1;++r){
 
-         if(walker_i[r*Lx + c] != walker_i[( (r + 1)%Ly )*Lx + c]){
+         if(walker_i[r*Lx + c] != walker_i[(r + 1)*Lx + c]){
 
             Walker walker_f(walker_i);
 
             walker_f[r*Lx + c] = !(walker_i[r*Lx + c]);
-            walker_f[( (r + 1)%Ly )*Lx + c] = !(walker_i[( (r + 1)%Ly )*Lx + c]);
+            walker_f[(r + 1)*Lx + c] = !(walker_i[(r + 1)*Lx + c]);
 
             list.push_back(walker_f);
 
